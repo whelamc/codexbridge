@@ -47,6 +47,14 @@ CodexBridge is a VS Code extension that connects local Codex session history wit
    - pick one task to view recent history
    - send messages to use independent TG chat mode
 
+## QR Code Image
+
+Use the QR code image below:
+
+![Telegram QR Code](./assets/qrcode/qr-code.png)
+
+If you find this project useful, you are welcome to sponsor me.
+
 ## Privacy & Data
 
 - This extension reads local files under your configured `sessionPath`.

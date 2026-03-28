@@ -47,6 +47,14 @@ CodexBridge 是一个 VS Code 扩展，用于把本地 Codex 会话历史与 Tel
    - 选择一个历史任务查看最近对话
    - 直接发消息进行 TG 独立会话
 
+## 二维码图片目录与引用
+
+二维码如下：
+
+![Telegram 二维码](./assets/qrcode/qr-code.png)
+
+If you find this project useful, you are welcome to sponsor me.
+
 ## 隐私与数据说明
 
 - 扩展会读取你本地配置的会话目录文件。
