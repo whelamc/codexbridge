@@ -1,0 +1,76 @@
+{
+  "name": "codexbridge",
+  "displayName": "CodexBridge",
+  "description": "Sync VSCode Codex session to Telegram",
+  "version": "1.0.0",
+  "publisher": "Whelam",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/whelam/codexbridge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/whelam/codexbridge/issues"
+  },
+  "homepage": "https://github.com/whelam/codexbridge#readme",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "codex",
+    "telegram",
+    "bridge",
+    "chat"
+  ],
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "CodexBridge Settings",
+      "properties": {
+        "codexbridge.telegramToken": {
+          "type": "string",
+          "default": "",
+          "description": "Telegram bot token"
+        },
+        "codexbridge.telegramChatId": {
+          "type": "string",
+          "default": "",
+          "description": "Telegram chat ID"
+        },
+        "codexbridge.sessionPath": {
+          "type": "string",
+          "default": "${env:HOME}/.codex/sessions",
+          "description": "Codex session directory path"
+        },
+        "codexbridge.codexBinary": {
+          "type": "string",
+          "default": "codex",
+          "description": "Codex CLI binary path, e.g. /Users/you/.vscode/extensions/.../codex"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.3",
+    "@types/node": "^20.2.5",
+    "@types/vscode": "^1.80.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node-telegram-bot-api": "^0.64.7"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.61.0",
+    "chokidar": "^3.5.3",
+    "fs-extra": "^11.1.1"
+  }
+}
