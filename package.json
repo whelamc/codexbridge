@@ -2,17 +2,18 @@
   "name": "codexbridge",
   "displayName": "CodexBridge",
   "description": "Sync VSCode Codex session to Telegram",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "Whelam",
+  "icon": "assets/logo.png",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/whelam/codexbridge.git"
+    "url": "https://github.com/whelamc/codexbridge.git"
   },
   "bugs": {
-    "url": "https://github.com/whelam/codexbridge/issues"
+    "url": "https://github.com/whelamc/codexbridge/issues"
   },
-  "homepage": "https://github.com/whelam/codexbridge#readme",
+  "homepage": "https://github.com/whelamc/codexbridge#readme",
   "categories": [
     "Other"
   ],
