@@ -1,5 +1,9 @@
 # CodexBridge
 
+<p align="center">
+  <img src="./assets/logo.png" alt="CodexBridge Logo" width="180" />
+</p>
+
 [中文说明（README.zh-CN）](./README.zh-CN.md)
 | [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Whelam.codexbridge)
 
