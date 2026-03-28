@@ -1,5 +1,8 @@
 # CodexBridge（中文说明）
 
+[English Guide (README.md)](./README.md)
+| [VS Code 应用市场](https://marketplace.visualstudio.com/items?itemName=Whelam.codexbridge)
+
 CodexBridge 是一个 VS Code 扩展，用于把本地 Codex 会话历史与 Telegram 做桥接展示。
 
 ## 功能

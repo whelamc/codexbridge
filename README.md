@@ -1,5 +1,8 @@
 # CodexBridge
 
+[中文说明（README.zh-CN）](./README.zh-CN.md)
+| [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Whelam.codexbridge)
+
 CodexBridge is a VS Code extension that connects local Codex session history with Telegram.
 
 ## Features
