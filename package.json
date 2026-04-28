@@ -2,7 +2,7 @@
   "name": "codexbridge",
   "displayName": "CodexBridge",
   "description": "Sync VSCode Codex session to Telegram",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "Whelam",
   "icon": "assets/logo.png",
   "license": "MIT",
