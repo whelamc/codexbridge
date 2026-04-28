@@ -8,6 +8,8 @@ import { parseSession } from './parser';
 import { listRecentSessions, type SessionSummary } from './sessionCatalog';
 
 let bot: TelegramBot | null = null;
+let pollingLockFd: number | null = null;
+let pollingLockPath: string | null = null;
 const selectedSessionByChat = new Map<number, string>();
 const tgHistoryByChat = new Map<number, Array<{ role: 'user' | 'assistant'; text: string }>>();
 const sessionCacheById = new Map<string, SessionSummary>();
@@ -19,6 +21,11 @@ export function initTelegram() {
   const { telegramToken } = getConfig();
   if (!telegramToken) {
     console.warn('Telegram token not set in settings');
+    return null;
+  }
+
+  if (!acquirePollingLock()) {
+    console.warn('Another CodexBridge process is already polling Telegram. Skip polling in this process.');
     return null;
   }
 
@@ -60,6 +67,33 @@ export async function markActiveSessionFromFile(filePath: string) {
 
 export function getBot() {
   return bot;
+}
+
+export function releaseTelegramResources() {
+  if (bot) {
+    bot.stopPolling().catch(() => {
+      // Ignore stop polling errors during shutdown.
+    });
+    bot = null;
+  }
+
+  if (pollingLockFd !== null) {
+    try {
+      fs.closeSync(pollingLockFd);
+    } catch {
+      // Ignore close errors during shutdown.
+    }
+    pollingLockFd = null;
+  }
+
+  if (pollingLockPath) {
+    try {
+      fs.unlinkSync(pollingLockPath);
+    } catch {
+      // Ignore unlink errors during shutdown.
+    }
+    pollingLockPath = null;
+  }
 }
 
 function registerHandlers() {
@@ -276,6 +310,47 @@ function buildIndependentPrompt(
   ]
     .filter(Boolean)
     .join('\n\n');
+}
+
+function acquirePollingLock(): boolean {
+  const lockPath = path.join(os.tmpdir(), 'codexbridge-telegram-polling.lock');
+  const content = `${process.pid}\n`;
+
+  try {
+    const fd = fs.openSync(lockPath, 'wx');
+    fs.writeFileSync(fd, content, 'utf8');
+    pollingLockFd = fd;
+    pollingLockPath = lockPath;
+    return true;
+  } catch {
+    try {
+      const existingPidRaw = fs.readFileSync(lockPath, 'utf8').trim();
+      const existingPid = Number.parseInt(existingPidRaw, 10);
+      if (!Number.isNaN(existingPid) && isProcessAlive(existingPid)) {
+        return false;
+      }
+
+      fs.unlinkSync(lockPath);
+      const fd = fs.openSync(lockPath, 'wx');
+      fs.writeFileSync(fd, content, 'utf8');
+      pollingLockFd = fd;
+      pollingLockPath = lockPath;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+}
+
+function isProcessAlive(pid: number): boolean {
+  if (!Number.isInteger(pid) || pid <= 0) return false;
+
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function resolveCodexBinary(): string {

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { watchSessions } from './sessionWatcher';
-import { initTelegram } from './telegram';
+import { initTelegram, releaseTelegramResources } from './telegram';
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('🚀 CodexBridge activated');
@@ -15,5 +15,6 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
+  releaseTelegramResources();
   console.log('CodexBridge deactivated');
 }

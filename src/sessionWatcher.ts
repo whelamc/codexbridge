@@ -2,10 +2,8 @@ import * as chokidar from 'chokidar';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { parseSession } from './parser';
-import { markActiveSessionFromFile, sendMessage } from './telegram';
 import { getConfig } from './config';
 
-let lastMessages = new Set<string>();
 let fileLineCursor = new Map<string, number>();
 
 export function watchSessions() {
@@ -34,24 +32,9 @@ export function watchSessions() {
       const input = getDeltaContent(filePath, content);
       if (!input.trim()) return;
 
-      const turns = parseSession(input);
-      let hasAssistantReply = false;
-
-      for (const turn of turns) {
-        if (turn.role !== 'assistant') {
-          continue;
-        }
-        const key = `${filePath}-${turn.role}-${turn.text}`;
-        if (!lastMessages.has(key)) {
-          lastMessages.add(key);
-          hasAssistantReply = true;
-          sendMessage(`🤖: ${turn.text}`);
-        }
-      }
-
-      if (hasAssistantReply) {
-        await markActiveSessionFromFile(filePath);
-      }
+      // Parse incoming data to keep watcher behavior consistent for future
+      // history/index features, but do not bridge assistant replies to Telegram.
+      parseSession(input);
     } catch (err) {
       console.error('Error reading session:', err);
     }
