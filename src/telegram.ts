@@ -232,8 +232,6 @@ function runIndependentChat(chatId: number, userText: string): Promise<void> {
           nextHistory.push({ role: 'assistant', text: reply });
           tgHistoryByChat.set(chatId, nextHistory.slice(-12));
           await bot?.sendMessage(chatId, `🤖: ${reply}`);
-        } else {
-          await bot?.sendMessage(chatId, '提交失败：本次调用没有返回可用回复。');
         }
       }
       resolve();
@@ -326,7 +324,13 @@ function acquirePollingLock(): boolean {
     try {
       const existingPidRaw = fs.readFileSync(lockPath, 'utf8').trim();
       const existingPid = Number.parseInt(existingPidRaw, 10);
-      if (!Number.isNaN(existingPid) && isProcessAlive(existingPid)) {
+      if (Number.isNaN(existingPid)) {
+        // Another process may have created the lock file and is about to write its pid.
+        // Treat malformed/empty content as a live lock to avoid double polling.
+        return false;
+      }
+
+      if (isProcessAlive(existingPid)) {
         return false;
       }
 

@@ -2,7 +2,7 @@
   "name": "codexbridge",
   "displayName": "CodexBridge",
   "description": "Sync VSCode Codex session to Telegram",
-  "version": "1.0.2",
+  "version": "1.0.8",
   "publisher": "Whelam",
   "icon": "assets/logo.png",
   "license": "MIT",
@@ -59,10 +59,11 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "tsc -p ./",
+    "vscode:prepublish": "npm version patch --no-git-tag-version && tsc -p ./",
     "compile": "tsc -watch -p ./",
     "clean:vsix": "find . -maxdepth 1 -type f -name \"*.vsix\" -delete",
-    "package:clean": "npm run clean:vsix && npm run vscode:prepublish && vsce package"
+    "package:clean": "npm run clean:vsix && npm run vscode:prepublish && vsce package",
+    "publish:auto": "vsce publish"
   },
   "devDependencies": {
     "typescript": "^5.1.3",
